@@ -1,0 +1,39 @@
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# Sample dataset (Fake & Real News Headlines)
+data = {
+    "headline": [
+        "Breaking: Celebrity Caught in Secret Scandal! Fans are shocked as leaked footage surfaces online.",
+        "Scientists Discover New Planet With Signs of Life! Astronomers say it could have a habitable atmosphere.",
+        "Government Hiding Truth About UFOs, Says Insider! Documents reveal classified reports on alien encounters.",
+        "New Study Shows Coffee Can Extend Your Lifespan. Researchers find evidence linking caffeine to longevity.",
+        "Shocking: Politician Involved in Money Laundering Scheme! Investigation uncovers offshore bank accounts.",
+        "NASA Confirms Water on Mars, A Big Step for Space Exploration. Experts believe this could lead to human settlement."
+    ],
+    "label": ["fake", "real", "fake", "real", "fake", "real"]  # Labels: "fake" or "real"
+}
+
+# Convert to DataFrame
+df = pd.DataFrame(data)
+
+# Initialize TF-IDF Vectorizer
+vectorizer = TfidfVectorizer(stop_words="english")
+
+# Fit and transform headlines
+tfidf_matrix = vectorizer.fit_transform(df["headline"])
+
+# Convert to DataFrame
+tfidf_df = pd.DataFrame(tfidf_matrix.toarray(), columns=vectorizer.get_feature_names_out())
+
+# Compute average TF-IDF score per category (fake vs. real)
+df_tfidf = pd.concat([df, tfidf_df], axis=1)
+fake_avg = df_tfidf[df_tfidf["label"] == "fake"].iloc[:, 2:].mean().sort_values(ascending=False)
+real_avg = df_tfidf[df_tfidf["label"] == "real"].iloc[:, 2:].mean().sort_values(ascending=False)
+
+# Display results
+print("\n🔹 Top Keywords in **Fake News**:")
+print(fake_avg.head(5))
+
+print("\n🔹 Top Keywords in **Real News**:")
+print(real_avg.head(5))
