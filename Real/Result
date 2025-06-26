@@ -1,0 +1,16 @@
+
+🔹 Top Keywords in **Fake News**:
+accounts     0.100504
+celebrity    0.100504
+bank         0.100504
+scheme       0.100504
+secret       0.100504
+dtype: float64
+
+🔹 Top Keywords in **Real News**:
+new            0.171558
+atmosphere     0.107179
+astronomers    0.107179
+signs          0.107179
+say            0.107179
+dtype: float64
